@@ -72,7 +72,7 @@ exports.signup = async (req, res, next) => {
 			.cookie('jwt', token, {
 				secure: process.env.NODE_ENV !== 'dev',
 				httpOnly: true,
-				sameSite: 'Strict',
+				sameSite: 'none',
 				maxAge: TokenAge,
 			})
 			.json({
@@ -133,7 +133,7 @@ exports.login = async (req, res, next) => {
 			.cookie('jwt', token, {
 				secure: process.env.NODE_ENV !== "dev",
 				httpOnly: true,
-				sameSite: 'Strict',
+				sameSite: 'none',
 				maxAge: TokenAge,
 			})
 			.json({
