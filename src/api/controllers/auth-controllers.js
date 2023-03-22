@@ -131,7 +131,7 @@ exports.login = async (req, res, next) => {
 			.status(200)
 			.cookie('jwt', token, {
 				httpOnly: true,
-				sameSite: 'strict',
+				sameSite: 'none',
 				maxAge: TokenAge,
 			})
 			.json({
