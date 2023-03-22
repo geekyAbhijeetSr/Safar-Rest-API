@@ -1,6 +1,7 @@
 const express = require('express')
 const cookieParser = require('cookie-parser')
 const cors = require('cors')
+const helmet = require('helmet')
 const connectDB = require('./config/connectDB')
 const errorHandler = require('./api/error/error-handler')
 const unknownRoutesHandler = require('./api/error/unknown-routes-handler')
@@ -11,6 +12,7 @@ const { removeMulterUploads } = require('./config/multerConfig')
 
 // basic config
 const server = express()
+server.use(helmet())
 server.use(express.json())
 server.use(express.urlencoded({ extended: true }))
 server.use(cookieParser())
