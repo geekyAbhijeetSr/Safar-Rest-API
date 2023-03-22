@@ -130,8 +130,8 @@ exports.login = async (req, res, next) => {
 		res
 			.status(200)
 			.cookie('jwt', token, {
+				secure: process.env.NODE_ENV !== "dev",
 				httpOnly: true,
-				sameSite: 'none',
 				maxAge: TokenAge,
 			})
 			.json({
