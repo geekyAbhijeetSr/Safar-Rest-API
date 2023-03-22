@@ -14,7 +14,7 @@ const server = express()
 server.use(express.json())
 server.use(express.urlencoded({ extended: true }))
 server.use(cookieParser())
-server.use(cors({ origin: ['http://localhost:3000'], credentials: true }))
+server.use(cors({ origin: process.env.ALLOWED_ORIGINS.split(','), credentials: true }))
 
 // routes
 server.use('/auth', authRoutes)
