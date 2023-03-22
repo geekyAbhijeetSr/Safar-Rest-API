@@ -4,7 +4,7 @@
 	"description": "",
 	"main": "index.js",
 	"scripts": {
-		"start": "node ./src/start.js",
+		"start": "node ./src/server.js",
 		"server": "nodemon -r dotenv/config ./src/server.js"
 	},
 	"author": "Abhijeet Singh",
