@@ -72,7 +72,7 @@ exports.signup = async (req, res, next) => {
 			.cookie('jwt', token, {
 				secure: process.env.NODE_ENV !== 'dev',
 				httpOnly: true,
-				sameSite: 'none',
+				sameSite: process.env.NODE_ENV === 'dev' ? 'Strict' : 'none',
 				maxAge: TokenAge,
 			})
 			.json({
@@ -131,9 +131,9 @@ exports.login = async (req, res, next) => {
 		res
 			.status(200)
 			.cookie('jwt', token, {
-				secure: process.env.NODE_ENV !== "dev",
+				secure: process.env.NODE_ENV !== 'dev',
 				httpOnly: true,
-				sameSite: 'none',
+				sameSite: process.env.NODE_ENV === 'dev' ? 'Strict' : 'none',
 				maxAge: TokenAge,
 			})
 			.json({
@@ -187,8 +187,9 @@ exports.renewToken = async (req, res, next) => {
 		res
 			.status(200)
 			.cookie('jwt', token, {
+				secure: process.env.NODE_ENV !== 'dev',
 				httpOnly: true,
-				sameSite: 'strict',
+				sameSite: process.env.NODE_ENV === 'dev' ? 'Strict' : 'none',
 				maxAge: TokenAge,
 			})
 			.json({
