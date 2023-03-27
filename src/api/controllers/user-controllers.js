@@ -36,28 +36,33 @@ exports.follow = async (req, res, next) => {
 		const { userId: Id } = req.tokenPayload
 		const { userId } = req.params
 
-		let [mainUser, user] = await Promise.all([
+		if (Id === userId) {
+			const error = new HttpError('This action is not allowed!', 500)
+			return next(error)
+		}
+
+		let [currentUser, user] = await Promise.all([
 			User.findById(Id),
 			User.findById(userId),
 		])
 
-		if (mainUser && user) {
-			if (mainUser.following.includes(user._id)) {
+		if (currentUser && user) {
+			if (currentUser.following.includes(user._id)) {
 				const error = new HttpError('Already following', 500)
 				return next(error)
 			}
-			user.followers.push(mainUser._id)
+			user.followers.push(currentUser._id)
 			user.noOfFollowers++
-			mainUser.following.push(user._id)
-			mainUser.noOfFollowing++
-			;[mainUser, user] = await Promise.all([mainUser.save(), user.save()])
+			currentUser.following.push(user._id)
+			currentUser.noOfFollowing++
+			;[currentUser, user] = await Promise.all([currentUser.save(), user.save()])
 		} else {
 			const error = new HttpError('Something went wrong', 500)
 			return next(error)
 		}
 
 		res.status(200).json({
-			user: mainUser,
+			user: currentUser,
 			following: user,
 			ok: true,
 		})
@@ -73,32 +78,37 @@ exports.unfollow = async (req, res, next) => {
 		const { userId: Id } = req.tokenPayload
 		const { userId } = req.params
 
-		let [mainUser, user] = await Promise.all([
+		if (Id === userId) {
+			const error = new HttpError("This action is not allowed!", 500)
+			return next(error)
+		}
+
+		let [currentUser, user] = await Promise.all([
 			User.findById(Id),
 			User.findById(userId),
 		])
 
-		if (mainUser && user) {
-			if (!mainUser.following.includes(user._id)) {
+		if (currentUser && user) {
+			if (!currentUser.following.includes(user._id)) {
 				const error = new HttpError('Not following', 500)
 				return next(error)
 			}
 
-			const index1 = user.followers.findIndex(f => f._id === mainUser._id)
+			const index1 = user.followers.findIndex(f => f._id === currentUser._id)
 			user.followers.splice(index1, 1)
 			user.noOfFollowers--
 
-			const index2 = mainUser.following.findIndex(f => f._id === user._id)
-			mainUser.following.splice(index2, 1)
-			mainUser.noOfFollowing--
-			;[mainUser, user] = await Promise.all([mainUser.save(), user.save()])
+			const index2 = currentUser.following.findIndex(f => f._id === user._id)
+			currentUser.following.splice(index2, 1)
+			currentUser.noOfFollowing--
+			;[currentUser, user] = await Promise.all([currentUser.save(), user.save()])
 		} else {
 			const error = new HttpError('Something went wrong', 500)
 			return next(error)
 		}
 
 		res.status(200).json({
-			user: mainUser,
+			user: currentUser,
 			unfollowing: user,
 			ok: true,
 		})
