@@ -16,7 +16,7 @@ server.use(helmet())
 server.use(express.json())
 server.use(express.urlencoded({ extended: true }))
 server.use(cookieParser())
-server.use(cors({ origin: process.env.ALLOWED_ORIGINS.split(','), credentials: true }))
+server.use(cors({ origin: process.env.ALLOWED_ORIGIN, credentials: true }))
 
 // routes
 server.use('/auth', authRoutes)

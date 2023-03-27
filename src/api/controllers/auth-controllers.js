@@ -269,7 +269,7 @@ exports.forgotPassword = async (req, res, next) => {
 			'10m'
 		)
 
-		const url = `http://localhost:3000/reset-password?token=${token}`
+		const url = `${process.env.ALLOWED_ORIGIN}/reset-password?token=${token}`
 
 		let mailOptions = {
 			from: 'nor666108.com',
