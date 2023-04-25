@@ -207,23 +207,32 @@ exports.renewToken = async (req, res, next) => {
 exports.changePassword = async (req, res, next) => {
 	try {
 		const { userId } = req.tokenPayload
-		const { old_password, new_password } = req.body
-		const user = await User.findById(userId).select('+password')
 
-		if (!user) {
-			const error = new HttpError('User not found!', 404)
+		if (userId === process.env.DEMO_USER_ID) {
+			const error = new HttpError(
+				`Action is not allowed!`,
+				500
+			)
 			return next(error)
 		}
+		
+		// const { old_password, new_password } = req.body
+		// const user = await User.findById(userId).select('+password')
 
-		const samePassword = await user.comparePassword(old_password)
-		if (!samePassword) {
-			const error = new HttpError('Incorrect old password', 401)
-			return next(error)
-		}
+		// if (!user) {
+		// 	const error = new HttpError('User not found!', 404)
+		// 	return next(error)
+		// }
 
-		user.password = new_password
+		// const samePassword = await user.comparePassword(old_password)
+		// if (!samePassword) {
+		// 	const error = new HttpError('Incorrect old password', 401)
+		// 	return next(error)
+		// }
 
-		await user.save()
+		// user.password = new_password
+
+		// await user.save()
 
 		res.json({
 			message: 'Changed password successfully',
