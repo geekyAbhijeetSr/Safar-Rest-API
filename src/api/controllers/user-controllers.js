@@ -124,6 +124,11 @@ exports.editUser = async (req, res, next) => {
 		const { userId } = req.params
 		const { username, name, email, bio } = req.body
 
+		if (userId === process.env.DEMO_USER_ID) {
+			const error = new HttpError(`Action is not allowed!`, 500)
+			return next(error)
+		}
+
 		const user = await User.findById(userId)
 
 		if (!user) {
