@@ -216,23 +216,23 @@ exports.changePassword = async (req, res, next) => {
 			return next(error)
 		}
 		
-		// const { old_password, new_password } = req.body
-		// const user = await User.findById(userId).select('+password')
+		const { old_password, new_password } = req.body
+		const user = await User.findById(userId).select('+password')
 
-		// if (!user) {
-		// 	const error = new HttpError('User not found!', 404)
-		// 	return next(error)
-		// }
+		if (!user) {
+			const error = new HttpError('User not found!', 404)
+			return next(error)
+		}
 
-		// const samePassword = await user.comparePassword(old_password)
-		// if (!samePassword) {
-		// 	const error = new HttpError('Incorrect old password', 401)
-		// 	return next(error)
-		// }
+		const samePassword = await user.comparePassword(old_password)
+		if (!samePassword) {
+			const error = new HttpError('Incorrect old password', 401)
+			return next(error)
+		}
 
-		// user.password = new_password
+		user.password = new_password
 
-		// await user.save()
+		await user.save()
 
 		res.json({
 			message: 'Changed password successfully',
