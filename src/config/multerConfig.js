@@ -24,8 +24,8 @@ const errorMessage = {
 
 const storage = multer.diskStorage({
 	destination: function (req, file, cb) {
-		if (!fs.existsSync(`${UPLOAD_DIR}/compressed`)) {
-			fs.mkdirSync(`${UPLOAD_DIR}/compressed`, { recursive: true })
+		if (!fs.existsSync(`./${UPLOAD_DIR}/compressed`)) {
+			fs.mkdirSync(`./${UPLOAD_DIR}/compressed`, { recursive: true })
 		}
 		cb(null, UPLOAD_DIR)
 	},
