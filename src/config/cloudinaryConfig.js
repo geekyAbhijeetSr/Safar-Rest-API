@@ -4,7 +4,7 @@ const { nano_id } = require('../api/helper/utils')
 const { removeLocalFile } = require('../api/helper/utils')
 
 const rootFolder = 'Safar/'
-const UPLOAD_DIR = 'uploads'
+const UPLOAD_DIR = process.env.ENV === 'production' ? '/tmp' : './uploads'
 
 cloudinary.config({
 	cloud_name: process.env.CLOUDINARY_CLOUD_NAME,

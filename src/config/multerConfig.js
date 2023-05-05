@@ -4,7 +4,7 @@ const HttpError = require('../api/error/http-error')
 const path = require('path')
 const { nano_id, removeOldFiles } = require('../api/helper/utils')
 
-const UPLOAD_DIR = 'uploads'
+const UPLOAD_DIR = process.env.ENV === 'production' ? '/tmp' : './uploads'
 
 const errorMessage = {
 	LIMIT_FILE_SIZE: 'File size should not be more than 5MB',
@@ -24,8 +24,8 @@ const errorMessage = {
 
 const storage = multer.diskStorage({
 	destination: function (req, file, cb) {
-		if (!fs.existsSync(`./${UPLOAD_DIR}/compressed`)) {
-			fs.mkdirSync(`./${UPLOAD_DIR}/compressed`, { recursive: true })
+		if (!fs.existsSync(`${UPLOAD_DIR}/compressed`)) {
+			fs.mkdirSync(`${UPLOAD_DIR}/compressed`, { recursive: true })
 		}
 		cb(null, UPLOAD_DIR)
 	},
