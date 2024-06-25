@@ -54,7 +54,7 @@ exports.signup = async (req, res, next) => {
 			avatar: user.avatar,
 			banner: user.banner,
 			bio: user.bio,
-			email: user.email
+			email: user.email,
 		}
 		delete user_.avatar.imageId
 		delete user_.banner.imageId
@@ -70,9 +70,9 @@ exports.signup = async (req, res, next) => {
 		res
 			.status(201)
 			.cookie('jwt', token, {
-				secure: process.env.NODE_ENV !== 'dev',
+				secure: process.env.ENV === 'production',
 				httpOnly: true,
-				sameSite: process.env.NODE_ENV === 'dev' ? 'Strict' : 'none',
+				sameSite: 'none',
 				maxAge: TokenAge,
 			})
 			.json({
@@ -131,9 +131,9 @@ exports.login = async (req, res, next) => {
 		res
 			.status(200)
 			.cookie('jwt', token, {
-				secure: process.env.NODE_ENV !== 'dev',
+				secure: process.env.ENV === 'production',
 				httpOnly: true,
-				sameSite: process.env.NODE_ENV === 'dev' ? 'Strict' : 'none',
+				sameSite: 'none',
 				maxAge: TokenAge,
 			})
 			.json({
@@ -187,9 +187,9 @@ exports.renewToken = async (req, res, next) => {
 		res
 			.status(200)
 			.cookie('jwt', token, {
-				secure: process.env.NODE_ENV !== 'dev',
+				secure: process.env.ENV === 'production',
 				httpOnly: true,
-				sameSite: process.env.NODE_ENV === 'dev' ? 'Strict' : 'none',
+				sameSite: 'none',
 				maxAge: TokenAge,
 			})
 			.json({
@@ -209,13 +209,10 @@ exports.changePassword = async (req, res, next) => {
 		const { userId } = req.tokenPayload
 
 		if (userId === process.env.DEMO_USER_ID) {
-			const error = new HttpError(
-				`Action is not allowed!`,
-				500
-			)
+			const error = new HttpError(`Action is not allowed!`, 500)
 			return next(error)
 		}
-		
+
 		const { old_password, new_password } = req.body
 		const user = await User.findById(userId).select('+password')
 
