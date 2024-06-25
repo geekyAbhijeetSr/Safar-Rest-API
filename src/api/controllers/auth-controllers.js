@@ -56,8 +56,8 @@ exports.signup = async (req, res, next) => {
 			bio: user.bio,
 			email: user.email
 		}
-		user_.avatar.imageId = undefined
-		user_.banner.imageId = undefined
+		delete user_.avatar.imageId
+		delete user_.banner.imageId
 
 		const token = await generateToken(
 			{
