@@ -70,9 +70,9 @@ exports.signup = async (req, res, next) => {
 		res
 			.status(201)
 			.cookie('jwt', token, {
-				secure: process.env.ENV === 'production',
+				secure: process.env.ENV === 'production', // Only use secure in production
 				httpOnly: true,
-				sameSite: 'none',
+				sameSite: process.env.ENV === 'production' ? 'none' : 'lax', // Use 'none' in production, 'lax' in development
 				maxAge: TokenAge,
 			})
 			.json({
@@ -131,9 +131,9 @@ exports.login = async (req, res, next) => {
 		res
 			.status(200)
 			.cookie('jwt', token, {
-				secure: process.env.ENV === 'production',
+				secure: process.env.ENV === 'production', // Only use secure in production
 				httpOnly: true,
-				sameSite: 'none',
+				sameSite: process.env.ENV === 'production' ? 'none' : 'lax', // Use 'none' in production, 'lax' in development
 				maxAge: TokenAge,
 			})
 			.json({
@@ -187,9 +187,9 @@ exports.renewToken = async (req, res, next) => {
 		res
 			.status(200)
 			.cookie('jwt', token, {
-				secure: process.env.ENV === 'production',
+				secure: process.env.ENV === 'production', // Only use secure in production
 				httpOnly: true,
-				sameSite: 'none',
+				sameSite: process.env.ENV === 'production' ? 'none' : 'lax', // Use 'none' in production, 'lax' in development
 				maxAge: TokenAge,
 			})
 			.json({

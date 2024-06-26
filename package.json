@@ -5,7 +5,7 @@
 	"main": "index.js",
 	"scripts": {
 		"start": "node ./src/server.js",
-		"server": "nodemon -r dotenv/config ./src/server.js"
+		"server": "nodemon -r dotenv/config ./src/server.js dotenv_config_path=.env.local"
 	},
 	"author": "Abhijeet Singh",
 	"license": "ISC",
